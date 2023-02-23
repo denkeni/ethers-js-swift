@@ -1,1 +1,1 @@
-module.exports.ethers = require('./ethers.js').default;
+global.ethers = require('./ethers.js').default;

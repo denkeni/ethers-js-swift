@@ -5,5 +5,5 @@ A Swift package wrapping [ethers.js](https://github.com/ethers-io/ethers.js). Be
 Souce file `ethers.js` is from `node_modules/ethers/dist/ethers.js`, and `ethers_browserify_babelify.js` from executing:
 
 ```
-browserify Sources/ethers-js-swift/ethers_export.js --standalone Ethers -o Sources/ethers-js-swift/ethers_browserify_babelify.js -t [ babelify --presets [ @babel/preset-env ] --plugins [ @babel/plugin-proposal-class-properties ] --no-compact]
+browserify Sources/ethers-js-swift/ethers_export.js -o Sources/ethers-js-swift/ethers_browserify_babelify.js -t [ babelify --presets [ @babel/preset-env ] --plugins [ @babel/plugin-proposal-class-properties ] --no-compact]
 ```
