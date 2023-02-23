@@ -33549,7 +33549,7 @@ exports.ethers = ethers;
 (function (global){(function (){
 "use strict";
 
-global.ethers = require('./ethers.js')["default"];
+global.ethers = require('./ethers.js');
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./ethers.js":2}]},{},[3]);
