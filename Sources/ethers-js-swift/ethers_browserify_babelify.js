@@ -33545,4 +33545,9 @@ var ethers = /*#__PURE__*/Object.freeze({
 exports.ethers = ethers;
 
 }).call(this)}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"_process":1}]},{},[2]);
+},{"_process":1}],3:[function(require,module,exports){
+"use strict";
+
+module.exports.ethers = require('./ethers.js')["default"];
+
+},{"./ethers.js":2}]},{},[3]);
