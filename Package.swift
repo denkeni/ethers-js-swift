@@ -22,7 +22,7 @@ let package = Package(
             name: "ethers-js-swift",
             dependencies: [],
             resources: [
-                .process("ethers.js")
+                .process("ethers_browserify_babelify.js")
             ]
         ),
         .testTarget(
