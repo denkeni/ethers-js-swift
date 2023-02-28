@@ -333,7 +333,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
 /**
  *  The current version of Ethers.
  */
-var version = "6.0.5";
+var version = "6.0.8";
 
 /**
  *  Property helper functions.
@@ -1228,7 +1228,7 @@ function replaceFunc(reason, offset, bytes, output, badCodepoint) {
  *  and accepts non-canonical (overlong) codepoints
  *
  *  **``"replace"``** - replace any illegal UTF-8 sequence with the
- *  UTF-8 replacement character (i.e. `\ufffd`) and accepts
+ *  UTF-8 replacement character (i.e. ``"\\ufffd"``) and accepts
  *  non-canonical (overlong) codepoints
  *
  *  @returns: Record<"error" | "ignore" | "replace", Utf8ErrorFunc>
@@ -19909,7 +19909,7 @@ var EnsResolver = /*#__PURE__*/function () {
       name: name
     });
     _classPrivateFieldSet(this, _supports, null);
-    _classPrivateFieldSet(this, _resolver, new Contract(address, ["function supportsInterface(bytes4) view returns (bool)", "function resolve(bytes, bytes) view returns (bytes)", "function addr(bytes32) view returns (address)", "function addr(bytes32, uint) view returns (address)", "function text(bytes32, string) view returns (string)", "function contenthash() view returns (bytes)"], provider));
+    _classPrivateFieldSet(this, _resolver, new Contract(address, ["function supportsInterface(bytes4) view returns (bool)", "function resolve(bytes, bytes) view returns (bytes)", "function addr(bytes32) view returns (address)", "function addr(bytes32, uint) view returns (address)", "function text(bytes32, string) view returns (string)", "function contenthash(bytes32) view returns (bytes)"], provider));
   }
   /**
    *  Resolves to true if the resolver supports wildcard resolution.
@@ -20136,7 +20136,7 @@ var EnsResolver = /*#__PURE__*/function () {
           while (1) switch (_context66.prev = _context66.next) {
             case 0:
               _context66.next = 2;
-              return _classPrivateMethodGet(this, _fetch, _fetch2).call(this, "contenthash()");
+              return _classPrivateMethodGet(this, _fetch, _fetch2).call(this, "contenthash(bytes32)");
             case 2:
               data = _context66.sent;
               if (!(data == null || data === "0x")) {
@@ -21487,32 +21487,55 @@ function injectCommonNetworks() {
   registerEth("xdai", 100, {
     ensNetwork: 1
   });
+  registerEth("optimism", 10, {
+    ensNetwork: 1,
+    etherscan: {
+      url: "https:/\/api-optimistic.etherscan.io/"
+    }
+  });
+  registerEth("optimism-goerli", 420, {
+    etherscan: {
+      url: "https:/\/api-goerli-optimistic.etherscan.io/"
+    }
+  });
+  registerEth("arbitrum", 42161, {
+    ensNetwork: 1,
+    etherscan: {
+      url: "https:/\/api.arbiscan.io/"
+    }
+  });
+  registerEth("arbitrum-goerli", 421613, {
+    etherscan: {
+      url: "https:/\/api-goerli.arbiscan.io/"
+    }
+  });
   // Polygon has a 35 gwei maxPriorityFee requirement
   registerEth("matic", 137, {
     ensNetwork: 1,
     //        priorityFee: 35000000000,
     etherscan: {
-      apiKey: "W6T8DJW654GNTQ34EFEYYP3EZD9DD27CT7",
+      //            apiKey: "W6T8DJW654GNTQ34EFEYYP3EZD9DD27CT7",
       url: "https:/\/api.polygonscan.com/"
     }
   });
-  registerEth("maticMumbai", 80001, {
+  registerEth("matic-mumbai", 80001, {
+    altNames: ["maticMumbai", "maticmum"],
     //        priorityFee: 35000000000,
     etherscan: {
-      apiKey: "W6T8DJW654GNTQ34EFEYYP3EZD9DD27CT7",
+      //            apiKey: "W6T8DJW654GNTQ34EFEYYP3EZD9DD27CT7",
       url: "https:/\/api-testnet.polygonscan.com/"
     }
   });
   registerEth("bnb", 56, {
     ensNetwork: 1,
     etherscan: {
-      apiKey: "EVTS3CU31AATZV72YQ55TPGXGMVIFUQ9M9",
+      //            apiKey: "EVTS3CU31AATZV72YQ55TPGXGMVIFUQ9M9",
       url: "http:/\/api.bscscan.com"
     }
   });
   registerEth("bnbt", 97, {
     etherscan: {
-      apiKey: "EVTS3CU31AATZV72YQ55TPGXGMVIFUQ9M9",
+      //            apiKey: "EVTS3CU31AATZV72YQ55TPGXGMVIFUQ9M9",
       url: "http:/\/api-testnet.bscscan.com"
     }
   });
@@ -25517,6 +25540,7 @@ var JsonRpcSigner = /*#__PURE__*/function (_AbstractSigner2) {
     _classCallCheck(this, JsonRpcSigner);
     _this65 = _super48.call(this, provider);
     _defineProperty(_assertThisInitialized(_this65), "address", void 0);
+    address = getAddress(address);
     defineProperties(_assertThisInitialized(_this65), {
       address: address
     });
@@ -26580,11 +26604,11 @@ var JsonRpcApiProvider = /*#__PURE__*/function (_AbstractProvider) {
                 break;
               }
               account = _step42.value;
-              if (!(getAddress(account) === account)) {
+              if (!(getAddress(account) === address)) {
                 _context146.next = 21;
                 break;
               }
-              return _context146.abrupt("return", new JsonRpcSigner(this, account));
+              return _context146.abrupt("return", new JsonRpcSigner(this, address));
             case 21:
               _context146.next = 17;
               break;
@@ -27095,7 +27119,7 @@ function getHost$3(name) {
       return "arb-goerli.g.alchemy.com";
     case "matic":
       return "polygon-mainnet.g.alchemy.com";
-    case "maticmum":
+    case "matic-mumbai":
       return "polygon-mumbai.g.alchemy.com";
     case "optimism":
       return "opt-mainnet.g.alchemy.com";
@@ -27288,7 +27312,7 @@ var CloudflareProvider = /*#__PURE__*/function (_JsonRpcProvider3) {
  *  - Optimism (``optimism``)
  *  - Optimism Goerli Testnet (``optimism-goerli``)
  *  - Polygon (``matic``)
- *  - Polygon Mumbai Testnet (``maticmum``)
+ *  - Polygon Mumbai Testnet (``matic-mumbai``)
  *
  *  @_subsection api/providers/thirdparty:Etherscan  [providers-etherscan]
  */
@@ -27406,7 +27430,7 @@ var EtherscanProvider = /*#__PURE__*/function (_AbstractProvider2) {
           return "https:/\/api-goerli.arbiscan.io";
         case "matic":
           return "https:/\/api.polygonscan.com";
-        case "maticmum":
+        case "matic-mumbai":
           return "https:/\/api-testnet.polygonscan.com";
         case "optimism":
           return "https:/\/api-optimistic.etherscan.io";
@@ -28638,7 +28662,7 @@ var WebSocketProvider = /*#__PURE__*/function (_SocketProvider) {
  *  - Optimism (``optimism``)
  *  - Optimism Goerli Testnet (``optimism-goerli``)
  *  - Polygon (``matic``)
- *  - Polygon Mumbai Testnet (``maticmum``)
+ *  - Polygon Mumbai Testnet (``matic-mumbai``)
  *
  *  @_subsection: api/providers/thirdparty:INFURA  [providers-infura]
  */
@@ -28658,7 +28682,7 @@ function getHost$2(name) {
       return "arbitrum-goerli.infura.io";
     case "matic":
       return "polygon-mainnet.infura.io";
-    case "maticmum":
+    case "matic-mumbai":
       return "polygon-mumbai.infura.io";
     case "optimism":
       return "optimism-mainnet.infura.io";
@@ -28846,7 +28870,7 @@ var InfuraProvider = /*#__PURE__*/function (_JsonRpcProvider4) {
  *  - Optimism (``optimism``)
  *  - Optimism Goerli Testnet (``optimism-goerli``)
  *  - Polygon (``matic``)
- *  - Polygon Mumbai Testnet (``maticmum``)
+ *  - Polygon Mumbai Testnet (``matic-mumbai``)
  *
  *  @_subsection: api/providers/thirdparty:QuickNode  [providers-quicknode]
  */
@@ -28866,7 +28890,7 @@ function getHost$1(name) {
       return "ethers.arbitrum-goerli.quiknode.pro";
     case "matic":
       return "ethers.matic.quiknode.pro";
-    case "maticmum":
+    case "matic-mumbai":
       return "ethers.matic-testnet.quiknode.pro";
     case "optimism":
       return "ethers.optimism.quiknode.pro";
@@ -30147,25 +30171,27 @@ var NonceManager = /*#__PURE__*/function (_AbstractSigner3) {
     key: "getNonce",
     value: function () {
       var _getNonce2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee179(blockTag) {
+        var delta;
         return _regeneratorRuntime().wrap(function _callee179$(_context179) {
           while (1) switch (_context179.prev = _context179.next) {
             case 0:
               if (!(blockTag === "pending")) {
-                _context179.next = 7;
+                _context179.next = 8;
                 break;
               }
               if (_classPrivateFieldGet(this, _noncePromise) == null) {
                 _classPrivateFieldSet(this, _noncePromise, _get(_getPrototypeOf(NonceManager.prototype), "getNonce", this).call(this, "pending"));
               }
-              _context179.next = 4;
+              delta = _classPrivateFieldGet(this, _delta);
+              _context179.next = 5;
               return _classPrivateFieldGet(this, _noncePromise);
-            case 4:
+            case 5:
               _context179.t0 = _context179.sent;
-              _context179.t1 = _classPrivateFieldGet(this, _delta);
+              _context179.t1 = delta;
               return _context179.abrupt("return", _context179.t0 + _context179.t1);
-            case 7:
-              return _context179.abrupt("return", _get(_getPrototypeOf(NonceManager.prototype), "getNonce", this).call(this, blockTag));
             case 8:
+              return _context179.abrupt("return", _get(_getPrototypeOf(NonceManager.prototype), "getNonce", this).call(this, blockTag));
+            case 9:
             case "end":
               return _context179.stop();
           }
@@ -30494,7 +30520,7 @@ function getHost(name) {
       return "eth-goerli.gateway.pokt.network";
     case "matic":
       return "poly-mainnet.gateway.pokt.network";
-    case "maticmum":
+    case "matic-mumbai":
       return "polygon-mumbai-rpc.gateway.pokt.network";
   }
   assertArgument(false, "unsupported network", "network", name);
